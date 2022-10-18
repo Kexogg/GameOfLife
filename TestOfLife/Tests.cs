@@ -30,7 +30,7 @@ public class Tests
         var (width, height) = GetDimensionsFromRawData(fieldRaw, separator);
         var field = new GameOfLifeField(width, height);
         field.FromString(fieldRaw, separator);
-        Assert.IsTrue(field.ToString(separator) == fieldRaw);
+        Assert.AreEqual(fieldRaw, field.ToString(separator));
     }
     
     [TestCase("01;01", ';')]

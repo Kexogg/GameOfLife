@@ -6,6 +6,7 @@ public class GameOfLifeField
 
     public GameOfLifeField(int width, int height)
     {
+        if (width == 0 || height == 0) throw new Exception();
         _grid = new bool[width, height];
     }
 
@@ -70,32 +71,49 @@ public class GameOfLifeField
     }
 
     /// <summary>
-    /// Set game field from string of ones and zeroes, where 0 - dead cell, 1 - alive cell. Rows are separated by defined character
+    /// Set game field from string of ones and zeroes, where 0 - dead cell, 1 - alive cell
     /// </summary>
-    /// <param name="data">String</param>
-    /// <param name="separator">Separation character</param>
-    public void FromString(string data, char separator = ';')
+    /// <param name="data">String of data</param>
+    /// <param name="separators">Array of separation characters</param>
+    public void FromString(string data, char[] separators)
     {
-        var rows = data.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+        var rows = data.Split(separators, StringSplitOptions.RemoveEmptyEntries);
         for (var y = 0; y < rows.Length; y++)
         {
             for (var x = 0; x < rows[y].Length; x++)
             {
-                _grid[x, y] = rows[y][x] == '1';
+                SetCell(x, y, rows[y][x] == '1');
             }
         }
     }
-
+    /// <summary>
+    /// Set game field from string of ones and zeroes, where 0 - dead cell, 1 - alive cell
+    /// </summary>
+    /// <param name="data">String of data</param>
+    /// <param name="separator">Separation character</param>
+    public void FromString(string data, char separator)
+    {
+        FromString(data, new [] { separator });
+    }
+    /// <summary>
+    /// Set game field from string of ones and zeroes, where 0 - dead cell, 1 - alive cell
+    /// </summary>
+    /// <param name="data">String of data</param>
+    public void FromString(string data)
+    {
+        FromString(data, new [] { ';', ',', ' ', '\t' });
+    }
+    
     public string ToString(char separator = ';')
     {
         var result = "";
-        for (var y = 0; y < _grid.GetLength(1); y++)
+        for (var y = 0; y < GetLength(1); y++)
         {
-            for (var x = 0; x < _grid.GetLength(0); x++)
+            for (var x = 0; x < GetLength(0); x++)
             {
-                result += _grid[x, y] ? "1" : "0";
+                result += GetCell(x, y) ? "1" : "0";
             }
-            if (y != _grid.GetLength(1) - 1) result += separator;
+            if (y != GetLength(1) - 1) result += separator;
         }
         return result;
     }
