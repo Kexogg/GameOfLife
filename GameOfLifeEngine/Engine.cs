@@ -1,10 +1,10 @@
 ﻿namespace GameOfLifeEngine;
 
-public class GameOfLifeEngine
+public class GameOfLifeField
 {
     private readonly bool[,] _grid;
 
-    public GameOfLifeEngine(int width, int height)
+    public GameOfLifeField(int width, int height)
     {
         _grid = new bool[width, height];
     }

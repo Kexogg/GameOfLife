@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using GameOfLifeEngine;
 
 namespace GameOfLife;
 
 internal static class GameOfLife
+
 {
     private static void Main()
     {
@@ -22,17 +22,17 @@ internal static class GameOfLife
         Console.WriteLine("Game finished");
     }
 
-    private static GameOfLifeEngine.GameOfLifeEngine SetupField()
+    private static GameOfLifeField SetupField()
     {
         var userInput = Console.ReadLine().Split().Select(int.Parse).ToArray();
         Console.WriteLine("Set dimensions");
-        var field = new GameOfLifeEngine.GameOfLifeEngine(userInput[0], userInput[1]);
+        var field = new GameOfLifeField(userInput[0], userInput[1]);
         SetStartingCells(field);
         return field;
     }
 
 
-    private static void SetStartingCells(GameOfLifeEngine.GameOfLifeEngine field)
+    private static void SetStartingCells(GameOfLifeField field)
     {
         Console.Clear();
         Console.WriteLine("Set amount of starting cells");
@@ -46,7 +46,7 @@ internal static class GameOfLife
         }
     }
 
-    private static void PrintField(GameOfLifeEngine.GameOfLifeEngine field)
+    private static void PrintField(GameOfLifeField field)
     {
         for (var x = 0; x < field.GetLength(0); x++)
         {

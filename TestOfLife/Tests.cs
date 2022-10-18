@@ -17,7 +17,7 @@ public class Tests
     [TestCase(true, true)]
     public void TestForAliveCells(bool cellState, bool expected)
     {
-        var field = new GameOfLifeEngine(2, 2);
+        var field = new GameOfLifeField(2, 2);
         field.SetCell(1, 1, cellState);
         Assert.AreEqual(expected, field.HasAliveCells());
     }
@@ -28,7 +28,7 @@ public class Tests
     public void TestToStringConversion(string fieldRaw, char separator)
     {
         var (width, height) = GetDimensionsFromRawData(fieldRaw, separator);
-        var field = new GameOfLifeEngine(width, height);
+        var field = new GameOfLifeField(width, height);
         field.FromString(fieldRaw, separator);
         Assert.IsTrue(field.ToString(separator) == fieldRaw);
     }
@@ -41,7 +41,7 @@ public class Tests
     public void TestFromStringConversion(string data, char separator)
     {
         var (width, height) = GetDimensionsFromRawData(data, separator);
-        var field = new GameOfLifeEngine(width, height);
+        var field = new GameOfLifeField(width, height);
         field.FromString(data, separator);
         Assert.AreEqual(data, field.ToString(separator));
     }
@@ -50,7 +50,7 @@ public class Tests
     [TestCase(-1, -1, true)]
     public void TestForOverflowCoordinate(int coordinateX, int coordinateY, bool expected)
     {
-        var field = new GameOfLifeEngine(2, 2);
+        var field = new GameOfLifeField(2, 2);
         field.SetCell(1, 1, true);
         Assert.AreEqual(expected, field.GetCell(coordinateX, coordinateY));
     }
@@ -59,7 +59,7 @@ public class Tests
     [TestCase("00;01", new[] { 1, 1 }, "00;00")]
     public void TestForIterationProcessing(string fieldRaw, int[] changes, string fieldExpectedRaw)
     {
-        var field = new GameOfLifeEngine(2, 2);
+        var field = new GameOfLifeField(2, 2);
         field.FromString(fieldRaw);
         field.ProcessIteration(new[] { changes });
         Assert.AreEqual(fieldExpectedRaw, field.ToString());
@@ -69,7 +69,7 @@ public class Tests
     public void TestForChanges(string fieldRaw, string expectedChangesRaw, char separator)
     {
         var (width, height) = GetDimensionsFromRawData(fieldRaw, separator);
-        var field = new GameOfLifeEngine(width, height);
+        var field = new GameOfLifeField(width, height);
         field.FromString(fieldRaw);
         field.ProcessIteration(field.CalculateChanges());
         Assert.AreEqual(expectedChangesRaw, field.ToString());
