@@ -11,21 +11,30 @@ internal static class GameOfLife
         Console.Clear();
         PrintField(field);
         Console.WriteLine("Starting field set\nEnter maximum amount of iterations (-1 for infinity)");
-        var maxIterationsCount = int.Parse(Console.ReadLine() ?? "-1");
+        if (!int.TryParse(Console.ReadLine(), out var maxIterationsCount)) maxIterationsCount = - 1;
+        Console.Clear();
+        PrintField(field);
+        Console.WriteLine("Set sleep time (in milliseconds)");
+        if (!int.TryParse(Console.ReadLine(), out var sleepTime)) sleepTime = 0;
+        Console.Clear();
+        PrintField(field);
         for (var i = 1; i != maxIterationsCount; i++)
         {
             field.ProcessIteration(field.CalculateChanges());
+            Console.Clear();            
+            PrintField(field);
+            Console.WriteLine($"Iteration {i}/{maxIterationsCount}");
             if (!field.HasAliveCells()) break;
+            Thread.Sleep(sleepTime);
         }
-
-        PrintField(field);
         Console.WriteLine("Game finished");
     }
 
     private static GameOfLifeField SetupField()
     {
+        Console.Clear();
+        Console.WriteLine("Set field dimensions");
         var userInput = Console.ReadLine().Split().Select(int.Parse).ToArray();
-        Console.WriteLine("Set dimensions");
         var field = new GameOfLifeField(userInput[0], userInput[1]);
         SetStartingCells(field);
         return field;
@@ -35,14 +44,24 @@ internal static class GameOfLife
     private static void SetStartingCells(GameOfLifeField field)
     {
         Console.Clear();
-        Console.WriteLine("Set amount of starting cells");
+        Console.WriteLine("Set amount of starting cells (-1 to disable limit)");
         var amountOfCells = int.Parse(Console.ReadLine() ?? "0");
-        for (var i = 0; i < amountOfCells; i++)
+        for (var i = 0; i != amountOfCells; i++)
         {
             Console.Clear();
-            Console.WriteLine($"Set coordinates for cell ({i + 1}/{amountOfCells}) and press RETURN");
-            var coordinates = Console.ReadLine().Split().Select(int.Parse).ToArray();
-            field.FlipCell(coordinates[0], coordinates[1]);
+            PrintField(field);
+            Console.WriteLine($"Enter coordinates for cell ({i + 1}/{amountOfCells})");
+            var input = Console.ReadLine();
+            if (input == "" && amountOfCells == -1) break;
+            try
+            {
+                var coordinates = input.Split().Select(int.Parse).ToArray();
+                field.FlipCell(coordinates[0], coordinates[1]);
+            }
+            catch
+            {
+                i--;
+            }
         }
     }
 
