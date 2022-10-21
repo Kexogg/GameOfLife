@@ -10,7 +10,6 @@ internal static class GameOfLife
         var field = SetupField();
         SetStartingCells(field);
         Console.Clear();
-        
         PrintField(field);
         Console.WriteLine("Starting field set\nEnter maximum amount of iterations (-1 for infinity)");
         if (!int.TryParse(Console.ReadLine(), out var maxIterationsCount)) maxIterationsCount = -1;
@@ -22,7 +21,7 @@ internal static class GameOfLife
         PrintField(field);
         for (var i = 1; i != maxIterationsCount; i++)
         {
-            field.ProcessIteration(field.CalculateChanges());
+            field.ProcessIteration();
             Console.SetCursorPosition(0, 0);
             PrintField(field);
             Console.WriteLine($"Iteration {i}/{maxIterationsCount}");
