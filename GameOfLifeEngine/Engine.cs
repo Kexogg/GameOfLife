@@ -94,11 +94,11 @@ public class GameOfLifeField
     {
         if (coordinateX < 0)
             coordinateX = _grid.GetLength(0) - 1;
-        else if (coordinateX == _grid.GetLength(0))
+        if (coordinateX == _grid.GetLength(0))
             coordinateX = 0;
         if (coordinateY < 0)
             coordinateY = _grid.GetLength(1) - 1;
-        else if (coordinateY == _grid.GetLength(0))
+        if (coordinateY == _grid.GetLength(0))
             coordinateY = 0;
         return _grid[coordinateX, coordinateY];
     }
