@@ -130,12 +130,23 @@ internal static class GameOfLife
 
     private static GameOfLifeField SetupField()
     {
+        string errorMessage = null;
         while (true)
         {
             Console.Clear();
-            Console.WriteLine("Set field dimensions");
-            var userInput = Console.ReadLine().Split().Select(int.Parse).ToArray();
-            if (userInput.Length != 2) continue;
+            Console.WriteLine("Set field dimensions (3X3 or bigger)");
+            if (errorMessage != null)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(errorMessage);
+                Console.ResetColor();
+            }
+            var userInput = Console.ReadLine().Split(new [] { ';', ',', ' ', 'x', 'X', '\t' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
+            if (userInput.Length != 2 || userInput[0] < 3 || userInput[1] < 3)
+            {
+                errorMessage = "Invalid input!";
+                continue;
+            }
             var field = new GameOfLifeField(userInput[0], userInput[1]);
             return field;
         }
